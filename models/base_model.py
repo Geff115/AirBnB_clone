@@ -19,6 +19,7 @@ ARGS:
 from uuid import uuid4
 from datetime import datetime
 
+
 class BaseModel:
     """The BaseModel class"""
 
@@ -29,7 +30,8 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key in ('created_at', 'updated_at'):
                     try:
-                        setattr(self, key, datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f'))
+                        setattr(self, key, datetime.strptime(
+                                                value, '%Y-%m-%dT%H:%M:%S.%f'))
                     except ValueError:
                         print(f"Invalid date format for {key}: {value}")
                         setattr(self, key, datetime.now())
