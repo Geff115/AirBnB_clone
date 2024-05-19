@@ -9,11 +9,13 @@ from models import storage
 
 class HBNBCommand(cmd.Cmd):
     """class defintion that inherits from cmd"""
+
     prompt = "(hbnb) "
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel,
         saves it to JSON file, & prints the id."""
+
         if not arg:
             print("** class name missing **")
             return
@@ -27,6 +29,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, arg):
         """Prints string representation of an instance
         based on class name and id."""
+
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -47,6 +50,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id."""
+
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -69,6 +73,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """Prints all string representations of all
         instances based or not on class name."""
+
         args = arg.split()
         obj_list = []
         if args and args[0] not in BaseModel.__subclasses__():
@@ -82,6 +87,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on class name & id
         by adding or updating attribute."""
+
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -119,15 +125,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
+
         return True
 
     def do_EOF(self, arg):
         """Exit the program when EOF (Ctrl+D) is encountered"""
+
         print()  # Print a newline for better formatting
         return True
 
     def emptyline(self):
         """Do nothing when an empty line is entered"""
+
         pass
 
 
