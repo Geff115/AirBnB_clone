@@ -16,8 +16,13 @@ ARGS:
 """
 
 
+import logging
 from uuid import uuid4
 from datetime import datetime
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class BaseModel:
@@ -33,7 +38,7 @@ class BaseModel:
                         setattr(self, key, datetime.strptime(
                                                 value, '%Y-%m-%dT%H:%M:%S.%f'))
                     except ValueError:
-                        print(f"Invalid date format for {key}: {value}")
+                        logger.info(f"Invalid date format for {key}: {value}")
                         setattr(self, key, datetime.now())
                 elif key != '__class__':
                     setattr(self, key, value)
@@ -41,6 +46,8 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            from models import storage
+            storage.new(self)
 
     def __str__(self):
         """str method that returns a string representation of the object"""
@@ -53,6 +60,8 @@ class BaseModel:
         """
 
         self.updated_at = datetime.now()
+        from models import storage
+        storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values of __dict__
