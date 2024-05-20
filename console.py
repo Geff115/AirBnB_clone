@@ -144,6 +144,18 @@ class HBNBCommand(cmd.Cmd):
 
         pass
 
+    def do_User_all(self, arg):
+        """Prints all instances of User class."""
+
+        objects = storage.all(User)
+        print(objects)
+
+    def do_State_all(self, arg):
+        """Prints all instances of State class."""
+
+        objects = storage.all(State)
+        print(objects)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
