@@ -40,7 +40,12 @@ class FileStorage:
 
         return ({
             'BaseModel': BaseModel,
-            'User': User
+            'User': User,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review
         })
 
     def all(self):
