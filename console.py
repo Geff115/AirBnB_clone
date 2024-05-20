@@ -20,9 +20,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
-            new_instance = eval(arg)()
-            new_instance.save()
-            print(new_instance.id)
+            if arg in storage.classes():
+                new_instance = storage.classes()[arg]()
+                new_instance.save()
+                print(new_instance.id)
+            else:
+                print("** class doesn't exist **")
         except NameError:
             print("** class doesn't exist **")
 
@@ -116,14 +119,8 @@ class HBNBCommand(cmd.Cmd):
         attribute_value = args[3]
         obj = storage.all()[key]
         try:
-            if attribute_value.isdigit():
-                attribute_value = int(attribute_value)
-            else:
-                try:
-                    attribute_value = float(attribute_value)
-                except ValueError:
-                    pass
-        except AttributeError:
+            attribute_value = eval(attribute_value)
+        except (NameError, SyntaxError):
             pass
         setattr(obj, attribute_name, attribute_value)
         obj.save()

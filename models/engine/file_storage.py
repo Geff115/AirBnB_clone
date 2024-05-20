@@ -24,6 +24,7 @@ ARGS:
 import os
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -38,7 +39,8 @@ class FileStorage:
         """Returns a dictionary of all valid classes."""
 
         return ({
-            'BaseModel': BaseModel
+            'BaseModel': BaseModel,
+            'User': User
         })
 
     def all(self):
