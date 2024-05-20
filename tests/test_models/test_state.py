@@ -8,9 +8,19 @@ from models.state import State
 class TestState(unittest.TestCase):
     """Runs a test on the State class"""
 
-    def test_attributes(self):
+    def setUp(self):
         state = State()
-        self.assertEqual(state.name, "")
+
+    def test_attributes(self):
+        """Test the attributes of State."""
+
+        self.assertTrue(hasattr(self.state, "name"))
+        self.assertEqual(self.state.name, "")
+
+    def test_inheritance(self):
+        """Test if State is a subclass of BaseModel."""
+
+        self.assertTrue(issubclass(type(self.state), BaseModel))
 
 
 if __name__ == '__main__':
