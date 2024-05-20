@@ -165,6 +165,12 @@ class HBNBCommand(cmd.Cmd):
                     instances = storage.get_class_map()[class_name].all()
                     print([str(obj) for obj in instances])
                     return
+            elif command == "count()":
+                if class_name in storage.get_class_map():
+                    count = len([obj for obj in storage.all().values()
+                                if obj.__class__.__name__ == class_name])
+                    print(count)
+                    return
         print("*** Unknown syntax: {}".format(line))
 
 

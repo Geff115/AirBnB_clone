@@ -84,3 +84,9 @@ class BaseModel:
         class_name = cls.__name__
         return ([obj.to_dict() for obj in all_objects.values()
                 if obj.__class__.__name__ == class_name])
+
+    @classmethod
+    def count(cls):
+        """Returns the count of all instances of the class."""
+
+        return (len([obj for obj in storage.all().values() if isinstance(obj, cls)]))
