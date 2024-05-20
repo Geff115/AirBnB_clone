@@ -86,17 +86,19 @@ class HBNBCommand(cmd.Cmd):
         instances based or not on class name."""
 
         args = arg.split()
-        obj_list = []
-        class_map = storage.get_class_map()
-        if args:
-            class_name = args[0]
-            if class_name not in class_map:
-                print("** class doesn't exist **")
-                return
-        for key, obj in storage.all().items():
-            if not args or obj.__class__.__name__ == args[0]:
-                obj_list.append(str(obj))
-        print(obj_list)
+        if args and args[0] not in storage.get_class_map():
+            print("** class doesn't exist **")
+            return
+        class_name = args[0] if args else None
+        instances = storage.all()
+        instance_list = []
+        for key, value in instances.items():
+            if class_name:
+                if key.startswith(class_name):
+                    instance_list.append(value.to_dict())
+            else:
+                instance_list.append(value.to_dict())
+        print(instance_list)
 
     def do_update(self, arg):
         """Updates an instance based on class name & id
@@ -151,17 +153,19 @@ class HBNBCommand(cmd.Cmd):
 
         pass
 
-    def do_User_all(self, arg):
-        """Prints all instances of User class."""
+    def default(self, line):
+        """Handle class-specific commands like <class name>.all()."""
 
-        objects = storage.all(User)
-        print(objects)
-
-    def do_State_all(self, arg):
-        """Prints all instances of State class."""
-
-        objects = storage.all(State)
-        print(objects)
+        args = line.split(".")
+        if len(args) == 2:
+            class_name = args[0]
+            command = args[1]
+            if command == "all()":
+                if class_name in storage.get_class_map():
+                    instances = storage.get_class_map()[class_name].all()
+                    print([str(obj) for obj in instances])
+                    return
+        print("*** Unknown syntax: {}".format(line))
 
 
 if __name__ == '__main__':

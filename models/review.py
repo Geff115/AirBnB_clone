@@ -11,3 +11,11 @@ class Review(BaseModel):
     place_id = ""
     user_id = ""
     text = ""
+
+    @classmethod
+    def all(cls):
+        """Returns a dictionary of all Review instances"""
+        from models import storage
+
+        return ([obj for obj in storage.all().values()
+                if isinstance(obj, cls)])

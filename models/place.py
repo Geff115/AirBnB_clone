@@ -19,3 +19,11 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
+    @classmethod
+    def all(cls):
+        """Returns a dictionary of all Place instances"""
+        from models import storage
+
+        return ([obj for obj in storage.all().values()
+                if isinstance(obj, cls)])
