@@ -8,11 +8,20 @@ from models.amenity import Amenity
 class TestAmenity(unittest.TestCase):
     """Test Amenity class"""
 
-    def test_attributes(self):
+    def setUp(self):
         """mathod test"""
 
-        amenity = Amenity()
-        self.assertEqual(amenity.name, "")
+        self.amenity = Amenity()
+
+    def test_attributes(self):
+        """Test the attributes of Amenity."""
+
+        self.assertTrue(hasattr(self.amenity, "name"))
+        self.assertEqual(self.amenity.name, "")
+
+    def test_inheritance(self):
+        """Test if Amenity is a subclass of BaseModel."""
+        self.assertTrue(issubclass(type(self.amenity), BaseModel))
 
 
 if __name__ == '__main__':
