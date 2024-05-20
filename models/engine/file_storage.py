@@ -40,8 +40,9 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def classes(self):
-        """Returns a dictionary of all valid classes."""
+    @staticmethod
+    def get_class_map():
+        """Returns a dictionary mapping class names to classes."""
 
         return ({
             'BaseModel': BaseModel,
@@ -81,9 +82,10 @@ class FileStorage:
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r") as file:
                 deserialized_objects = json.load(file)
+                class_map = FileStorage.get_class_map()
                 for key, value in deserialized_objects.items():
                     class_name, object_id = key.split(".")
-                    class_obj = self.classes().get(class_name)
+                    class_obj = class_map.get(class_name)
                     if class_obj:
                         obj = class_obj(**value)
                         self.__objects[key] = obj

@@ -26,8 +26,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
-            if arg in storage.classes():
-                new_instance = storage.classes()[arg]()
+            if arg in storage.get_class_map():
+                new_instance = storage.get_class_map()[arg]()
                 new_instance.save()
                 print(new_instance.id)
             else:
@@ -40,11 +40,12 @@ class HBNBCommand(cmd.Cmd):
         based on class name and id."""
 
         args = arg.split()
+        class_map = storage.get_class_map()
         if not args:
             print("** class name missing **")
             return
         class_name = args[0]
-        if class_name not in storage.classes():
+        if class_name not in class_map:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -61,11 +62,12 @@ class HBNBCommand(cmd.Cmd):
         """Deletes an instance based on the class name and id."""
 
         args = arg.split()
+        class_map = storage.get_class_map()
         if not args:
             print("** class name missing **")
             return
         class_name = args[0]
-        if class_name not in storage.classes():
+        if class_name not in class_map:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -85,9 +87,10 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         obj_list = []
+        class_map = storage.get_class_map()
         if args:
             class_name = args[0]
-            if class_name not in storage.classes():
+            if class_name not in class_map:
                 print("** class doesn't exist **")
                 return
         for key, obj in storage.all().items():
@@ -100,11 +103,12 @@ class HBNBCommand(cmd.Cmd):
         by adding or updating attribute."""
 
         args = arg.split()
+        class_map = storage.get_class_map()
         if not args:
             print("** class name missing **")
             return
         class_name = args[0]
-        if class_name not in storage.classes():
+        if class_name not in class_map:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
