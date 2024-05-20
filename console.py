@@ -34,19 +34,19 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        try:
-            class_name = args[0]
-            if len(args) < 2:
-                print("** instance id missing **")
-                return
-            obj_id = args[1]
-            key = "{}.{}".format(class_name, obj_id)
-            if key in storage.all():
-                print(storage.all()[key])
-            else:
-                print("** no instance found **")
-        except KeyError:
+        class_name = args[0]
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        if key in storage.all():
+            print(storage.all()[key])
+        else:
+            print("** no instance found **")
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id."""
@@ -55,20 +55,20 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        try:
-            class_name = args[0]
-            if len(args) < 2:
-                print("** instance id missing **")
-                return
-            obj_id = args[1]
-            key = "{}.{}".format(class_name, obj_id)
-            if key in storage.all():
-                del storage.all()[key]
-                storage.save()
-            else:
-                print("** no instance found **")
-        except KeyError:
+        class_name = args[0]
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        if key in storage.all():
+            del storage.all()[key]
+            storage.save()
+        else:
+            print("** no instance found **")
 
     def do_all(self, arg):
         """Prints all string representations of all
@@ -76,9 +76,11 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         obj_list = []
-        if args and args[0] not in BaseModel.__subclasses__():
-            print("** class doesn't exist **")
-            return
+        if args:
+            class_name = args[0]
+            if class_name not in storage.classes():
+                print("** class doesn't exist **")
+                return
         for key, obj in storage.all().items():
             if not args or obj.__class__.__name__ == args[0]:
                 obj_list.append(str(obj))
@@ -92,36 +94,39 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        try:
-            class_name = args[0]
-            if class_name not in BaseModel.__subclasses__():
-                print("** class doesn't exist **")
-                return
-            if len(args) < 2:
-                print("** instance id missing **")
-                return
-            obj_id = args[1]
-            key = "{}.{}".format(class_name, obj_id)
-            if key not in storage.all():
-                print("** no instance found **")
-                return
-            if len(args) < 3:
-                print("** attribute name missing **")
-                return
-            if len(args) < 4:
-                print("** value missing **")
-                return
-            attribute_name = args[2]
-            attribute_value = args[3]
-            obj = storage.all()[key]
-            try:
-                attribute_value = eval(attribute_value)
-            except (NameError, SyntaxError):
-                pass
-            setattr(obj, attribute_name, attribute_value)
-            obj.save()
-        except KeyError:
+        class_name = args[0]
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        if key not in storage.all():
+            print("** no instance found **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        attribute_name = args[2]
+        attribute_value = args[3]
+        obj = storage.all()[key]
+        try:
+            if attribute_value.isdigit():
+                attribute_value = int(attribute_value)
+            else:
+                try:
+                    attribute_value = float(attribute_value)
+                except ValueError:
+                    pass
+        except AttributeError:
+            pass
+        setattr(obj, attribute_name, attribute_value)
+        obj.save()
 
     def do_quit(self, arg):
         """Quit command to exit the program"""

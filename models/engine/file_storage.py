@@ -34,6 +34,13 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def classes(self):
+        """Returns a dictionary of all valid classes."""
+
+        return ({
+            'BaseModel': BaseModel
+        })
+
     def all(self):
         """Returns the dictionary __objects"""
 
@@ -43,15 +50,15 @@ class FileStorage:
         """sets in __objects the obj with key <obj class name>.id"""
 
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file"""
 
         serialized_objects = {}
-        for key, value in FileStorage.__objects.items():
+        for key, value in self.__objects.items():
             serialized_objects[key] = value.to_dict()
-        with open(FileStorage.__file_path, "w") as file:
+        with open(self.__file_path, "w") as file:
             json.dump(serialized_objects, file)
 
     def reload(self):
@@ -59,15 +66,12 @@ class FileStorage:
         only if the JSON file exists, otherwise do nothing.
         """
 
-        if os.path.isfile(FileStorage.__file_path):
-            with open(FileStorage.__file_path, "r") as file:
+        if os.path.isfile(self.__file_path):
+            with open(self.__file_path, "r") as file:
                 deserialized_objects = json.load(file)
                 for key, value in deserialized_objects.items():
                     class_name, object_id = key.split(".")
-                    class_map = {
-                            'BaseModel': BaseModel,
-                    }
-                    class_obj = class_map.get(class_name)
+                    class_obj = self.classes().get(class_name)
                     if class_obj:
                         obj = class_obj(**value)
-                        FileStorage.__objects[key] = obj
+                        self.__objects[key] = obj
