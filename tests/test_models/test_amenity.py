@@ -3,13 +3,14 @@
 
 import unittest
 from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
 class TestAmenity(unittest.TestCase):
     """Test Amenity class"""
 
     def setUp(self):
-        """mathod test"""
+        """sets up the environment"""
 
         self.amenity = Amenity()
 

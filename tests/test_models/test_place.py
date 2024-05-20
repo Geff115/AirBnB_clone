@@ -3,30 +3,36 @@
 
 import unittest
 from models.place import Place
+from models.base_model import BaseModel
 
 
 class TestPlace(unittest.TestCase):
     """Place class"""
 
     def setUp(self):
-        """method test"""
+        """Sets up test environment"""
 
         self.place = Place()
 
     def test_attributes(self):
-        """Test the attributes of Place."""
+        """Test if Place is a subclass of BaseModel."""
 
-        self.assertTrue(hasattr(self.place, "city_id"))
-        self.assertTrue(hasattr(self.place, "user_id"))
-        self.assertTrue(hasattr(self.place, "name"))
-        self.assertTrue(hasattr(self.place, "description"))
-        self.assertTrue(hasattr(self.place, "number_rooms"))
-        self.assertTrue(hasattr(self.place, "number_bathrooms"))
-        self.assertTrue(hasattr(self.place, "max_guest"))
-        self.assertTrue(hasattr(self.place, "price_by_night"))
-        self.assertTrue(hasattr(self.place, "latitude"))
-        self.assertTrue(hasattr(self.place, "longitude"))
-        self.assertTrue(hasattr(self.place, "amenity_ids"))
+        attributes = {
+                "city_id": str,
+                "user_id": str,
+                "name": str,
+                "description": str,
+                "number_rooms": int,
+                "number_bathrooms": int,
+                "max_guest": int,
+                "price_by_night": int,
+                "latitude": float,
+                "longitude": float,
+                "amenity_ids": list
+        }
+        for attr, attr_type in attributes.items():
+            self.assertTrue(hasattr(self.place, attr))
+            self.assertIsInstance(getattr(self.place, attr), attr_type)
         self.assertEqual(self.place.city_id, "")
         self.assertEqual(self.place.user_id, "")
         self.assertEqual(self.place.name, "")

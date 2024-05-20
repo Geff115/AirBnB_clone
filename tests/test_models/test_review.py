@@ -3,15 +3,16 @@
 
 import unittest
 from models.review import Review
+from models.base_model import BaseModel
 
 
 class TestReview(unittest.TestCase):
     """Review class"""
 
     def setUp(self):
-        """method test"""
+        """Sets up the environment"""
 
-        review = Review()
+        self.review = Review()
 
     def test_attributes(self):
         """Test the attributes of Review."""

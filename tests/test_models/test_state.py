@@ -3,13 +3,16 @@
 
 import unittest
 from models.state import State
+from models.base_model import BaseModel
 
 
 class TestState(unittest.TestCase):
     """Runs a test on the State class"""
 
     def setUp(self):
-        state = State()
+        """Sets up the environment"""
+
+        self.state = State()
 
     def test_attributes(self):
         """Test the attributes of State."""

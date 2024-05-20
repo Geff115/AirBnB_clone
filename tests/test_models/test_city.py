@@ -3,18 +3,19 @@
 
 import unittest
 from models.city import City
+from models.base_model import BaseModel
 
 
 class TestCity(unittest.TestCase):
     """Tests the City class"""
 
     def setUp(self):
-        """test method"""
+        """Sets up the environment"""
 
         self.city = City()
 
     def test_attributes(self):
-        """Test the attributes of City."""
+        """Tests the attributes of City"""
 
         self.assertTrue(hasattr(self.city, "state_id"))
         self.assertTrue(hasattr(self.city, "name"))
