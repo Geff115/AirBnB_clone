@@ -17,3 +17,14 @@ class Amenity(BaseModel):
 
         return ([obj for obj in storage.all().values()
                 if isinstance(obj, cls)])
+
+    @classmethod
+    def show(cls, obj_id):
+        """Returns an instance of Amenity by id"""
+        from models import storage
+
+        all_instances = storage.all()
+        for instance in all_instances.values():
+            if isinstance(instance, cls) and instance.id == obj_id:
+                return (instance)
+        return (None)

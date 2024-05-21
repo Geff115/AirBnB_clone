@@ -54,9 +54,12 @@ class FileStorage:
             'Review': Review
         })
 
-    def all(self):
+    def all(self, cls=None):
         """Returns the dictionary __objects"""
 
+        if cls:
+            return ({key: obj for key, obj in self.__objects.items()
+                    if isinstance(obj, cls)})
         return (self.__objects)
 
     def new(self, obj):

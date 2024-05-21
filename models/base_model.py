@@ -52,6 +52,8 @@ class BaseModel:
     def __str__(self):
         """str method that returns a string representation of the object"""
 
+        my_dict = self.to_dict()
+        my_dict.pop('__class__', None)
         return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
@@ -90,3 +92,10 @@ class BaseModel:
         """Returns the count of all instances of the class."""
 
         return (len([obj for obj in storage.all().values() if isinstance(obj, cls)]))
+
+    @classmethod
+    def show(cls, obj_id):
+        """Returns an instance of the class based on its ID."""
+
+        key = "{}.{}".format(cls.__name__, obj_id)
+        return (storage.all().get(key, None))

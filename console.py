@@ -159,17 +159,26 @@ class HBNBCommand(cmd.Cmd):
         args = line.split(".")
         if len(args) == 2:
             class_name = args[0]
-            command = args[1]
-            if command == "all()":
-                if class_name in storage.get_class_map():
-                    instances = storage.get_class_map()[class_name].all()
+            command = args[1].strip()
+
+            class_map = storage.get_class_map()
+            if class_name in class_map:
+                cls = class_map[class_name]
+                if command == "all()":
+                    instances = cls.all()
                     print([str(obj) for obj in instances])
                     return
-            elif command == "count()":
-                if class_name in storage.get_class_map():
-                    count = len([obj for obj in storage.all().values()
-                                if obj.__class__.__name__ == class_name])
+                elif command == "count()":
+                    count = len(cls.all())
                     print(count)
+                    return
+                elif command.startswith("show(") and command.endswith(")"):
+                    obj_id = command[5:-1].strip("\"'")
+                    instance = cls.show(obj_id)
+                    if instance:
+                        print(instance)
+                    else:
+                        print("** no instance found **")
                     return
         print("*** Unknown syntax: {}".format(line))
 
