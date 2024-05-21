@@ -28,3 +28,15 @@ class Amenity(BaseModel):
             if isinstance(instance, cls) and instance.id == obj_id:
                 return (instance)
         return (None)
+
+    @classmethod
+    def destroy(cls, obj_id):
+        """Destroys an instance of Amenity by ID"""
+        from models import storage
+
+        key = f"{cls.__name__}.{obj_id}"
+        if key in storage.all():
+            del storage.all()[key]
+            storage.save()
+            return (True)
+        return (False)

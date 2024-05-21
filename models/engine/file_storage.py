@@ -58,8 +58,11 @@ class FileStorage:
         """Returns the dictionary __objects"""
 
         if cls:
-            return ({key: obj for key, obj in self.__objects.items()
-                    if isinstance(obj, cls)})
+            if isinstance(cls, str):
+                cls = eval(cls)
+            filtered_dict = {k: v for k, v in self.__objects.items()
+                             if isinstance(v, cls)}
+            return (filtered_dict)
         return (self.__objects)
 
     def new(self, obj):

@@ -180,6 +180,13 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         print("** no instance found **")
                     return
+                elif command.startswith("destroy(") and command.endswith(")"):
+                    obj_id = command[8:-1].strip("\"'")
+                    if cls.destroy(obj_id):
+                        print(f"Instance {obj_id} destroyed")
+                    else:
+                        print("** no instance found **")
+                    return
         print("*** Unknown syntax: {}".format(line))
 
 
