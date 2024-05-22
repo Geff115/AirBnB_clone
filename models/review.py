@@ -52,13 +52,18 @@ class Review(BaseModel):
         return (False)
 
     @classmethod
-    def update(cls, obj_id, attr_name, attr_value):
+    def update(cls, obj_id, obj_dict):
         """Updates an instance of Review by ID"""
         from models import storage
 
-        instance = cls.show(obj_id)
+        instance = storage.all()[f'{cls.__name__}.{obj_id}']
         if instance:
-            setattr(instance, attr_name, attr_value)
+            for key, value in obj_dict.items():
+                if hasattr(instance, key):
+                    attr_type = type(getattr(instance, key))
+                    setattr(instance, key, attr_type(value))
+                else:
+                    setattr(instance, key, value)
             instance.save()
             return (True)
         return (False)

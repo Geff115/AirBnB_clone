@@ -186,21 +186,26 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
                     return
                 elif command.startswith("update(") and command.endswith(")"):
-                    params = command[7:-1].strip().split(", ")
-                    if len(params) == 3:
-                        obj_id = params[0].strip("\"'")
-                        attr_name = params[1].strip("\"'")
-                        attr_value = params[2].strip("\"'")
-                        instance = cls.show(obj_id)
-                        if instance:
-                            if hasattr(instance, attr_name):
-                                attr_type = type(getattr(instance, attr_name))
-                                setattr(instance, attr_name, attr_type(attr_value))
+                    params = command[7:-1].strip()
+                    obj_id, obj_dict_str = params.split(", ", 1)
+                    obj_id = obj_id.strip("\"'")
+                    try:
+                        import json
+                        obj_dict = json.loads(obj_dict_str.replace("'", "\""))
+                    except json.JSONDecodeError:
+                        print("** invalid dictionary representation **")
+                        return
+                    instance = cls.show(obj_id)
+                    if instance:
+                        for key, value in obj_dict.items():
+                            if hasattr(instance, key):
+                                attr_type = type(getattr(instance, key))
+                                setattr(instance, key, attr_type(value))
                             else:
-                                setattr(instance, attr_name, attr_value)
-                            instance.save()
-                        else:
-                            print("** no instance found **")
+                                setattr(instance, key, value)
+                        instance.save()
+                    else:
+                        print("** no instance found **")
                     return
         print("*** Unknown syntax: {}".format(line))
 
