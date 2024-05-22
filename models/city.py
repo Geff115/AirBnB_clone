@@ -11,6 +11,13 @@ class City(BaseModel):
     state_id = ""
     name = ""
 
+    def __init__(self, *args, **kwargs):
+        """Initialization method of an instance of City"""
+
+        super().__init__(*args, **kwargs)
+        self.state_id = kwargs.get("state_id", "")
+        self.name = kwargs.get("name", "")
+
     @classmethod
     def all(cls):
         """Returns a dictionary of all City instances"""

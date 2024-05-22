@@ -12,6 +12,14 @@ class Review(BaseModel):
     user_id = ""
     text = ""
 
+    def __init__(self, *args, **kwargs):
+        """Initialization method of an instance of Review"""
+
+        super().__init__(*args, **kwargs)
+        self.place_id = kwargs.get("place_id", "")
+        self.user_id = kwargs.get("user_id", "")
+        self.text = kwargs.get("text", "")
+
     @classmethod
     def all(cls):
         """Returns a dictionary of all Review instances"""

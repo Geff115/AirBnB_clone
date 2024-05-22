@@ -10,6 +10,12 @@ class Amenity(BaseModel):
 
     name = ""
 
+    def __init__(self, *args, **kwargs):
+        """Initialization method of an instance of Amenity"""
+
+        super().__init__(*args, **kwargs)
+        self.name = kwargs.get("name", "")
+
     @classmethod
     def all(cls):
         """Returns a dictionary of all Amenity instances"""
