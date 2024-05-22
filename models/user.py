@@ -17,6 +17,15 @@ class User(BaseModel):
     first_name = ""
     last_name = ""
 
+    def __init__(self, *args, **kwargs):
+        """Initialize a new User instance"""
+
+        super().__init__(*args, **kwargs)
+        self.email = kwargs.get("email", "")
+        self.password = kwargs.get("password", "")
+        self.first_name = kwargs.get("first_name", "")
+        self.last_name = kwargs.get("last_name", "")
+
     @classmethod
     def all(cls):
         """Returns a dictionary of all User instances"""
@@ -45,5 +54,17 @@ class User(BaseModel):
         if key in storage.all():
             del storage.all()[key]
             storage.save()
+            return (True)
+        return (False)
+
+    @classmethod
+    def update(cls, obj_id, attr_name, attr_value):
+        """Updates an instance of User by ID"""
+        from models import storage
+
+        instance = cls.show(obj_id)
+        if instance:
+            setattr(instance, attr_name, attr_value)
+            instance.save()
             return (True)
         return (False)

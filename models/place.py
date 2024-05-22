@@ -50,3 +50,15 @@ class Place(BaseModel):
             storage.save()
             return (True)
         return (False)
+
+    @classmethod
+    def update(cls, obj_id, attr_name, attr_value):
+        """Updates an instance of Place by ID"""
+        from models import storage
+
+        instance = cls.show(obj_id)
+        if instance:
+            setattr(instance, attr_name, attr_value)
+            instance.save()
+            return (True)
+        return (False)

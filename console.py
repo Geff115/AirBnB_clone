@@ -182,10 +182,25 @@ class HBNBCommand(cmd.Cmd):
                     return
                 elif command.startswith("destroy(") and command.endswith(")"):
                     obj_id = command[8:-1].strip("\"'")
-                    if cls.destroy(obj_id):
-                        print(f"Instance {obj_id} destroyed")
-                    else:
+                    if not cls.destroy(obj_id):
                         print("** no instance found **")
+                    return
+                elif command.startswith("update(") and command.endswith(")"):
+                    params = command[7:-1].strip().split(", ")
+                    if len(params) == 3:
+                        obj_id = params[0].strip("\"'")
+                        attr_name = params[1].strip("\"'")
+                        attr_value = params[2].strip("\"'")
+                        instance = cls.show(obj_id)
+                        if instance:
+                            if hasattr(instance, attr_name):
+                                attr_type = type(getattr(instance, attr_name))
+                                setattr(instance, attr_name, attr_type(attr_value))
+                            else:
+                                setattr(instance, attr_name, attr_value)
+                            instance.save()
+                        else:
+                            print("** no instance found **")
                     return
         print("*** Unknown syntax: {}".format(line))
 
