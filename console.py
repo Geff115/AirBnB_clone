@@ -169,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
                     print([str(obj) for obj in instances])
                     return
                 elif command == "count()":
-                    count = len(cls.all())
+                    count = sum(1 for obj in storage.all().values() if isinstance(obj, cls))
                     print(count)
                     return
                 elif command.startswith("show(") and command.endswith(")"):
