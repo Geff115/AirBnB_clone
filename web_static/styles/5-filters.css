@@ -35,13 +35,14 @@
 .amenities {
 	height: 100%;
 	width: 25%;
-	border-right: 1px #DDDDDD;
+	border-right: none;
 }
 
 .locations h3, .amenities h3 {
 	font-weight: 600;
 	color: #000000;
 	text-align: center;
+	margin-bottom: 10px;
 }
 
 .locations h4, .amenities h4 {
@@ -49,4 +50,5 @@
 	font-size: 14px;
 	color: #000000;
 	text-align: center;
+	margin-top: 5px;
 }
